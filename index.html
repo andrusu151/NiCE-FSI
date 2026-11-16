@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NiCE Financial Services — Your money, in focus</title>
+  <title>NiCE Financial Services — Every goal, one clear plan</title>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -338,7 +338,7 @@
   <div class="wrap">
     <div>
       <div class="eyebrow"><b>New</b> Instant mortgage decisions in the app</div>
-      <h1>Your money,<br><em>finally in focus.</em></h1>
+      <h1>Every goal,<br><em>one clear plan.</em></h1>
       <p class="lead">Everyday banking, savings, mortgages and investments in one clear view — with real people a message away when it matters.</p>
       <div class="hero-cta">
         <a href="#" class="btn btn-blue">Open an account</a>
@@ -699,11 +699,29 @@
 </script>
 
 <!-- Webchat widget -->
-<script src="https://github.com/Cognigy/Webchat/releases/latest/download/webchat.js"></script>
 <script>
-  initWebchat(
-    "https://endpoint-trial.cognigy.ai/81b521b904969d67740201d66deefce57a364f1a18ce36b7e8889740546a4250"
-  );
+  // Loads the Cognigy webchat, retrying once if the first download fails,
+  // and only calls initWebchat once it actually exists.
+  (function () {
+    var SRC = "https://github.com/Cognigy/Webchat/releases/latest/download/webchat.js";
+    var ENDPOINT = "https://endpoint-trial.cognigy.ai/cab38bdcdc6c94ca4d171547768a5ce346327e85f7fa4ebb777a2be743c51049";
+    function load(url, onFail) {
+      var s = document.createElement("script");
+      s.src = url;
+      s.onload = function () {
+        if (typeof window.initWebchat === "function") { window.initWebchat(ENDPOINT); }
+        else { onFail(); }
+      };
+      s.onerror = onFail;
+      document.body.appendChild(s);
+    }
+    load(SRC, function () {
+      console.warn("Webchat script failed to load, retrying once...");
+      load(SRC + "?retry=" + Date.now(), function () {
+        console.error("Could not load webchat.js from GitHub. Check network/ad-blocker, or host webchat.js alongside this page.");
+      });
+    });
+  })();
 </script>
 
 </body>
